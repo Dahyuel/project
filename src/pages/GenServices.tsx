@@ -7,7 +7,6 @@ import '../styles/animations.css';
 import DynamicBlobBackground from '../components/DynamicBlobBackground';
 import { useScrollAnimation } from '../utils/scrollAnimations';
 import { servicesData } from '../data/servicesData';
-import AnimatedBackground from '../components/AnimatedBackground';
 
 const GenServices = () => {
   const { observeElements } = useScrollAnimation();
@@ -39,7 +38,7 @@ const GenServices = () => {
   return (
     <ChatBotProvider>
       <div className="min-h-screen bg-black text-white overflow-x-hidden relative overflow-hidden">
-        <AnimatedBackground />
+        <DynamicBlobBackground />
         <div className="relative z-20">
           <Navigation />
           <main>

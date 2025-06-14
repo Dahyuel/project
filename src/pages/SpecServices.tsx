@@ -9,7 +9,6 @@ import DynamicBlobBackground from '../components/DynamicBlobBackground';
 import { useParams } from 'react-router-dom';
 import { nichesData } from '../data/nichesData';
 import { useScrollAnimation } from '../utils/scrollAnimations';
-import AnimatedBackground from '../components/AnimatedBackground';
 
 const validNicheNames = nichesData.map(n => n.name);
 
@@ -125,7 +124,7 @@ const SpecServices = () => {
   return (
     <ChatBotProvider>
       <div className="min-h-screen bg-black relative">
-        <AnimatedBackground />
+        <DynamicBlobBackground />
         <div className="relative z-20">
           <Navigation />
           <main>

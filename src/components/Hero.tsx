@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useChatBot } from '../contexts/ChatBotContext';
 import { Phone } from 'lucide-react';
 import { useScrollAnimation } from '../utils/scrollAnimations';
-import AnimatedBackground from './AnimatedBackground';
+import DynamicBlobBackground from './DynamicBlobBackground';
 
 const Hero = () => {
   const { openChat } = useChatBot();
@@ -33,7 +33,7 @@ const Hero = () => {
 
   return (
     <section id="home" ref={sectionRef} className="min-h-screen flex items-center justify-center relative pt-20 pb-32 bg-black overflow-hidden">
-      <AnimatedBackground />
+      <DynamicBlobBackground />
       
       <div className="container mx-auto px-4 sm:px-6 text-center relative z-20">
         <div>
