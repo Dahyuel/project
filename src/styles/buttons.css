@@ -1,0 +1,66 @@
+/* Button Styles */
+.gradient-cta-btn {
+  background: linear-gradient(45deg, #0052D4, #4364F7, #6FB1FC, #0052D4, #4364F7);
+  background-size: 300% 300%;
+  animation: gradient-shift 2.5s ease infinite;
+  border: none;
+  position: relative;
+  transition: all 0.3s ease;
+  color: white;
+  font-weight: normal;
+}
+
+.gradient-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+
+.gradient-cta-btn:active {
+  transform: translateY(0);
+}
+
+.white-cta-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.white-cta-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+.white-cta-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Premium Button Styles */
+.premium-button {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-radius: 0.75rem;
+  font-weight: normal;
+}
+
+.premium-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+
+.premium-button:active {
+  transform: translateY(0);
+} 
