@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import Hero from '../components/Hero';
 import About from '../components/About';
@@ -9,10 +9,9 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import ChatBot from '../components/ChatBot';
 import { ChatBotProvider } from '../contexts/ChatBotContext';
-import '../animations.css';
+import '../styles/animations.css';
 
 function Home() {
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     // Only keep scroll to top functionality

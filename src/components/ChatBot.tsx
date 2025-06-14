@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { Bot, X, Send } from 'lucide-react';
 import { useChatBot } from '../contexts/ChatBotContext';
 
 const ChatBot = () => {
@@ -8,20 +8,29 @@ const ChatBot = () => {
     { type: 'bot', text: 'Hello! I\'m your AI assistant. How can I help you today?' }
   ]);
   const [inputValue, setInputValue] = useState('');
+  const [isClosing, setIsClosing] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
-    if (prefilledMessage && isOpen) {
-      // Immediately send the prefilled message without showing typing
-      setMessages(prev => [...prev, { type: 'user', text: prefilledMessage }]);
-      
-      setTimeout(() => {
-        setMessages(prev => [...prev, {
-          type: 'bot',
-          text: 'Thanks for your message! Our team will get back to you shortly. In the meantime, feel free to explore our services or book a call with our experts.'
-        }]);
-      }, 1000);
+    if (isOpen) {
+      setIsClosing(false);
+      // Use a timeout to ensure the component is rendered before the animation class is applied
+      const timer = setTimeout(() => setIsRendered(true), 10);
+
+      if (prefilledMessage) {
+        setMessages(prev => [...prev, { type: 'user', text: prefilledMessage }]);
+        setTimeout(() => {
+          setMessages(prev => [...prev, {
+            type: 'bot',
+            text: 'Thanks for your message! Our team will get back to you shortly. In the meantime, feel free to explore our services or book a call with our experts.'
+          }]);
+        }, 1000);
+      }
+      return () => clearTimeout(timer);
+    } else {
+      setIsRendered(false);
     }
-  }, [prefilledMessage, isOpen]);
+  }, [isOpen, prefilledMessage]);
 
   const sendMessage = () => {
     if (inputValue.trim()) {
@@ -37,23 +46,32 @@ const ChatBot = () => {
     }
   };
 
+  const handleClose = () => {
+    setIsClosing(true);
+    // Wait for the closing animation to finish before calling closeChat
+    setTimeout(() => {
+      closeChat();
+      setIsClosing(false);
+    }, 400); // This duration should match the transition duration in CSS
+  };
+
   return (
     <>
       {/* Chat Widget */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-80 h-96 bg-black/80 border border-white/20 rounded-xl backdrop-blur-md z-50 flex flex-col animate-in duration-300 slide-in-from-bottom-4 fade-in">
+        <div className={`chatbot-container fixed bottom-24 right-6 w-80 h-96 bg-black/80 border border-white/20 rounded-xl backdrop-blur-md z-50 flex flex-col ${(isRendered && !isClosing) ? 'open' : ''}`}>
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-white/10">
             <div className="flex items-center">
               <div className="w-8 h-8 dynamic-gradient-icon rounded-full flex items-center justify-center mr-3">
-                <MessageCircle className="w-4 h-4 text-white" />
+                <Bot className="w-4 h-4 text-white" />
               </div>
               <div>
                 <h3 className="text-white font-light">AI Assistant</h3>
                 <p className="text-xs text-gray-400">Online now</p>
               </div>
             </div>
-            <button onClick={closeChat} className="text-gray-400 hover:text-white transition-colors duration-200">
+            <button onClick={handleClose} className="text-gray-400 hover:text-white transition-colors duration-200">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -98,13 +116,10 @@ const ChatBot = () => {
       {/* Toggle Button */}
       <button
         onClick={toggleChat}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-[#0052D4] via-[#4364F7] to-[#6FB1FC] rounded-full flex items-center justify-center shadow-lg hover:from-[#0052D4]/80 hover:via-[#4364F7]/80 hover:to-[#6FB1FC]/80 transition-all duration-300 z-50 hover-glow hover:scale-110"
+        className="fixed z-50 bottom-6 right-6 md:bottom-8 md:right-8 shadow-xl rounded-full p-4 gradient-cta-btn animate-gradient-shift border border-white/10 backdrop-blur-lg transition-all duration-300 hover:scale-105 focus:outline-none"
+        aria-label="Open chatbot"
       >
-        {isOpen ? (
-          <X className="w-6 h-6 text-white" />
-        ) : (
-          <MessageCircle className="w-6 h-6 text-white" />
-        )}
+        <Bot className="w-7 h-7 text-white" />
       </button>
     </>
   );

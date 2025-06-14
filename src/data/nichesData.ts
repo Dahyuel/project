@@ -1,65 +1,104 @@
+import { BarChart2, FileText, Phone, TrendingUp, Calendar, GraduationCap, Home, Users, FileCheck, Palette, Target, Send, Star, ShoppingCart, Package } from 'lucide-react';
+
 export const nichesData = [
   {
-    name: "Healthcare",
-    description: "Transforming healthcare with AI-driven diagnostics, personalized treatment plans, and operational efficiency.",
+    name: 'Sales',
     features: [
-      { name: "AI Diagnostics", description: "Accurate disease detection with machine learning." },
-      { name: "Personalized Medicine", description: "Tailored treatment plans based on patient data." },
-      { name: "Operational Efficiency", description: "Optimizing hospital workflows and resource allocation." }
+      {
+        name: 'CRM Data Automation',
+        description: 'Automated contact management, follow-up scheduling, and sales activity tracking.',
+        icon: BarChart2
+      },
+      {
+        name: 'Proposal Generation',
+        description: 'AI-powered custom quotes, contracts, and sales document creation.',
+        icon: FileText
+      },
+      {
+        name: 'Sales Call Analysis',
+        description: 'Conversation insights, sentiment analysis, and performance coaching recommendations.',
+        icon: Phone
+      }
     ]
   },
   {
-    name: "Finance",
-    description: "Revolutionizing finance with AI for fraud detection, algorithmic trading, and personalized financial advice.",
+    name: 'Coaching',
     features: [
-      { name: "Fraud Detection", description: "AI-powered systems to identify and prevent fraudulent activities." },
-      { name: "Algorithmic Trading", description: "Automated trading strategies for optimized returns." },
-      { name: "Risk Assessment", description: "Advanced analytics for precise credit and investment risk." }
+      {
+        name: 'Client Progress Tracking',
+        description: 'Automated goal monitoring, milestone tracking, and progress report generation.',
+        icon: TrendingUp
+      },
+      {
+        name: 'Session Scheduling & Reminders',
+        description: 'Smart calendar management with automated booking and follow-up communications.',
+        icon: Calendar
+      },
+      {
+        name: 'Personalized Content Delivery',
+        description: 'AI-curated learning materials and resources based on individual client needs.',
+        icon: GraduationCap
+      }
     ]
   },
   {
-    name: "Retail",
-    description: "Enhancing retail experiences with AI for customer personalization, inventory management, and demand forecasting.",
+    name: 'Real Estate',
     features: [
-      { name: "Customer Personalization", description: "Tailoring shopping experiences with AI-driven recommendations." },
-      { name: "Inventory Optimization", description: "Automating stock management and supply chain efficiency." },
-      { name: "Demand Forecasting", description: "Predicting market trends to optimize product availability." }
+      {
+        name: 'Property Valuation AI',
+        description: 'Automated market analysis and property pricing based on comparable sales data.',
+        icon: Home
+      },
+      {
+        name: 'Lead Management System',
+        description: 'Automated buyer/seller qualification and nurturing workflows.',
+        icon: Users
+      },
+      {
+        name: 'Document Processing',
+        description: 'Automated contract generation, compliance checking, and transaction management.',
+        icon: FileCheck
+      }
     ]
   },
   {
-    name: "Marketing",
-    description: "Boosting marketing effectiveness with AI for content generation, lead scoring, and campaign optimization.",
+    name: 'Marketing',
     features: [
-      { name: "Content Generation", description: "AI-created marketing copy and campaigns." },
-      { name: "Lead Scoring", description: "Automated prospect qualification and ranking." },
-      { name: "Social Media Automation", description: "Scheduled posting and engagement." }
+      {
+        name: 'Content Generation',
+        description: 'AI-created marketing copy, social media posts, and campaign materials.',
+        icon: Palette
+      },
+      {
+        name: 'Lead Scoring & Qualification',
+        description: 'Automated prospect evaluation and sales pipeline management.',
+        icon: Target
+      },
+      {
+        name: 'Email Campaign Automation',
+        description: 'Personalized email sequences based on customer behavior and preferences.',
+        icon: Send
+      }
     ]
   },
   {
-    name: "Sales",
-    description: "Streamlining sales processes with AI for CRM automation, proposal generation, and sales forecasting.",
+    name: 'E-Commerce',
     features: [
-      { name: "CRM Automation", description: "Streamlined pipeline and follow-up processes." },
-      { name: "Proposal Generation", description: "AI-powered custom proposals." },
-      { name: "Sales Forecasting", description: "Predictive analytics for revenue planning." }
-    ]
-  },
-  {
-    name: "Coaching",
-    description: "Empowering coaching practices with AI for progress tracking, session scheduling, and personalized content delivery.",
-    features: [
-      { name: "Progress Tracking", description: "Automated client milestone monitoring." },
-      { name: "Session Scheduling", description: "Smart calendar and reminder systems." },
-      { name: "Content Delivery", description: "Personalized learning path automation." }
-    ]
-  },
-  {
-    name: "Real-Estate",
-    description: "Modernizing real estate with AI for property valuation, lead qualification, and document processing.",
-    features: [
-      { name: "Property Valuation", description: "AI-driven market analysis and pricing." },
-      { name: "Lead Qualification", description: "Automated buyer/seller screening." },
-      { name: "Document Processing", description: "Streamlined contract and paperwork handling." }
+      {
+        name: 'Review & Rating Management',
+        description: 'Automated review collection, sentiment analysis, and response generation for customer feedback.',
+        icon: Star
+      },
+      {
+        name: 'Abandoned Cart Recovery',
+        description: 'Automated email and SMS sequences that re-engage customers who left items in their cart with personalized offers and reminders.',
+        icon: ShoppingCart
+      },
+      {
+        name: 'Inventory Management & Forecasting',
+        description: 'Automated stock level monitoring, demand prediction, and supplier reordering to prevent stockouts and overstock situations.',
+        icon: Package
+      }
     ]
   }
 ]; 
