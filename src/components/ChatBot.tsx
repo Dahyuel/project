@@ -1,30 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { Bot, X, Send } from 'lucide-react';
+import { Bot, X, Send, Loader2 } from 'lucide-react';
 import { useChatBot } from '../contexts/ChatBotContext';
+
+interface Message {
+  type: 'bot' | 'user';
+  text: string;
+  timestamp: Date;
+}
 
 const ChatBot = () => {
   const { isOpen, closeChat, toggleChat, prefilledMessage } = useChatBot();
-  const [messages, setMessages] = useState([
-    { type: 'bot', text: 'Hello! I\'m your AI assistant. How can I help you today?' }
+  const [messages, setMessages] = useState<Message[]>([
+    { 
+      type: 'bot', 
+      text: 'Hello! I\'m your AI assistant from NileByte. How can I help you today?',
+      timestamp: new Date()
+    }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isClosing, setIsClosing] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [sessionId] = useState(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  const [userId] = useState(`user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+
+  // N8N Webhook URL
+  const WEBHOOK_URL = 'https://dahyy.app.n8n.cloud/webhook-test/8ff8eadf-a001-411d-a5f0-78128d0db981';
 
   useEffect(() => {
     if (isOpen) {
       setIsClosing(false);
-      // Use a timeout to ensure the component is rendered before the animation class is applied
       const timer = setTimeout(() => setIsRendered(true), 10);
 
       if (prefilledMessage) {
-        setMessages(prev => [...prev, { type: 'user', text: prefilledMessage }]);
-        setTimeout(() => {
-          setMessages(prev => [...prev, {
-            type: 'bot',
-            text: 'Thanks for your message! Our team will get back to you shortly. In the meantime, feel free to explore our services or book a call with our experts.'
-          }]);
-        }, 1000);
+        handleSendMessage(prefilledMessage);
       }
       return () => clearTimeout(timer);
     } else {
@@ -32,27 +41,95 @@ const ChatBot = () => {
     }
   }, [isOpen, prefilledMessage]);
 
-  const sendMessage = () => {
-    if (inputValue.trim()) {
-      setMessages([...messages, { type: 'user', text: inputValue }]);
-      setInputValue('');
+  const sendToN8N = async (message: string): Promise<string> => {
+    try {
+      const response = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: message,
+          sessionId: sessionId,
+          userId: userId,
+          timestamp: new Date().toISOString()
+        })
+      });
 
-      setTimeout(() => {
-        setMessages(prev => [...prev, {
-          type: 'bot',
-          text: 'Thanks for your message! Our team will get back to you shortly. In the meantime, feel free to explore our services or book a call with our experts.'
-        }]);
-      }, 1000);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseText = await response.text();
+      return responseText || 'I apologize, but I didn\'t receive a proper response. Please try again.';
+    } catch (error) {
+      console.error('Error sending message to N8N:', error);
+      return 'I\'m sorry, but I\'m having trouble connecting right now. Please try again in a moment, or feel free to contact our team directly.';
+    }
+  };
+
+  const handleSendMessage = async (messageText?: string) => {
+    const messageToSend = messageText || inputValue.trim();
+    
+    if (!messageToSend) return;
+
+    // Add user message immediately
+    const userMessage: Message = {
+      type: 'user',
+      text: messageToSend,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
+    setIsLoading(true);
+
+    try {
+      // Send to N8N and get response
+      const botResponse = await sendToN8N(messageToSend);
+      
+      // Add bot response
+      const botMessage: Message = {
+        type: 'bot',
+        text: botResponse,
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error in handleSendMessage:', error);
+      
+      // Add error message
+      const errorMessage: Message = {
+        type: 'bot',
+        text: 'I apologize, but I\'m experiencing technical difficulties. Please try again or contact our support team.',
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleClose = () => {
     setIsClosing(true);
-    // Wait for the closing animation to finish before calling closeChat
     setTimeout(() => {
       closeChat();
       setIsClosing(false);
-    }, 400); // This duration should match the transition duration in CSS
+    }, 400);
+  };
+
+  const formatMessage = (text: string) => {
+    // Simple formatting for better readability
+    return text
+      .split('\n')
+      .map((line, index) => (
+        <span key={index}>
+          {line}
+          {index < text.split('\n').length - 1 && <br />}
+        </span>
+      ));
   };
 
   return (
@@ -67,11 +144,16 @@ const ChatBot = () => {
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div>
-                <h3 className="text-white font-light">AI Assistant</h3>
-                <p className="text-xs text-gray-400">Online now</p>
+                <h3 className="text-white font-light">NileByte AI Assistant</h3>
+                <p className="text-xs text-gray-400">
+                  {isLoading ? 'Typing...' : 'Online now'}
+                </p>
               </div>
             </div>
-            <button onClick={handleClose} className="text-gray-400 hover:text-white transition-colors duration-200">
+            <button 
+              onClick={handleClose} 
+              className="text-gray-400 hover:text-white transition-colors duration-200"
+            >
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -85,10 +167,27 @@ const ChatBot = () => {
                     ? 'bg-gradient-to-r from-[#0052D4] via-[#4364F7] to-[#6FB1FC] text-white'
                     : 'bg-white/10 text-gray-200'
                 }`}>
-                  <p className="text-sm font-light">{message.text}</p>
+                  <p className="text-sm font-light">
+                    {formatMessage(message.text)}
+                  </p>
+                  <p className="text-xs opacity-70 mt-1">
+                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
                 </div>
               </div>
             ))}
+            
+            {/* Loading indicator */}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-white/10 text-gray-200 p-3 rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span className="text-sm font-light">Thinking...</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Input */}
@@ -98,15 +197,25 @@ const ChatBot = () => {
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && !isLoading) {
+                    handleSendMessage();
+                  }
+                }}
                 placeholder="Type your message..."
-                className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 text-sm transition-colors duration-200"
+                disabled={isLoading}
+                className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 text-sm transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <button
-                onClick={sendMessage}
-                className="w-8 h-8 dynamic-gradient-icon rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+                onClick={() => handleSendMessage()}
+                disabled={isLoading || !inputValue.trim()}
+                className="w-8 h-8 dynamic-gradient-icon rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-4 h-4 text-white" />
+                {isLoading ? (
+                  <Loader2 className="w-4 h-4 text-white animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4 text-white" />
+                )}
               </button>
             </div>
           </div>
