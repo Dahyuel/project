@@ -25,7 +25,7 @@ const ChatBot = () => {
   const [userId] = useState(`user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
 
   // N8N Webhook URL
-  const WEBHOOK_URL = 'https://dahyy.app.n8n.cloud/webhook-test/8ff8eadf-a001-411d-a5f0-78128d0db981';
+  const WEBHOOK_URL = 'https://dahyy.app.n8n.cloud/webhook-test/ai-chatbot-webhook';
 
   useEffect(() => {
     if (isOpen) {
