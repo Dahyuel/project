@@ -13,7 +13,7 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([
     { 
       type: 'bot', 
-      text: 'Hello! I\'m your AI assistant from NileByte. How can I help you today?',
+      text: 'Hello! I\'m Nilebot, your AI assistant from NileByte. How can I help you today?',
       timestamp: new Date()
     }
   ]);
@@ -22,10 +22,9 @@ const ChatBot = () => {
   const [isRendered, setIsRendered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId] = useState(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
-  const [userId] = useState(`user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
 
-  // N8N Webhook URL
-  const WEBHOOK_URL = 'https://dahyy.app.n8n.cloud/webhook-test/ai-chatbot-webhook';
+  // N8N Chat Trigger Webhook URL
+  const WEBHOOK_URL = 'https://dahyy.app.n8n.cloud/webhook/b5c5e803-11e7-4915-929d-5911dc2f08e1/chat';
 
   useEffect(() => {
     if (isOpen) {
@@ -49,9 +48,8 @@ const ChatBot = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: message,
+          chatInput: message,
           sessionId: sessionId,
-          userId: userId,
           timestamp: new Date().toISOString()
         })
       });
@@ -60,8 +58,23 @@ const ChatBot = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const responseText = await response.text();
-      return responseText || 'I apologize, but I didn\'t receive a proper response. Please try again.';
+      const responseData = await response.json();
+      
+      // Handle different response formats from your N8N workflow
+      if (typeof responseData === 'string') {
+        return responseData;
+      } else if (responseData.message) {
+        return responseData.message;
+      } else if (responseData.output) {
+        return responseData.output;
+      } else if (responseData.response) {
+        return responseData.response;
+      } else if (responseData.text) {
+        return responseData.text;
+      } else {
+        // If response is an object, try to extract meaningful content
+        return responseData.content || JSON.stringify(responseData);
+      }
     } catch (error) {
       console.error('Error sending message to N8N:', error);
       return 'I\'m sorry, but I\'m having trouble connecting right now. Please try again in a moment, or feel free to contact our team directly.';
@@ -121,15 +134,28 @@ const ChatBot = () => {
   };
 
   const formatMessage = (text: string) => {
-    // Simple formatting for better readability
+    // Enhanced formatting for better readability
     return text
       .split('\n')
-      .map((line, index) => (
-        <span key={index}>
-          {line}
-          {index < text.split('\n').length - 1 && <br />}
-        </span>
-      ));
+      .map((line, index) => {
+        // Handle horizontal lines
+        if (line.trim() === '---') {
+          return <hr key={index} className="my-2 border-white/20" />;
+        }
+        
+        // Handle bold text
+        const boldFormatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        return (
+          <span key={index} dangerouslySetInnerHTML={{ __html: boldFormatted }}>
+          </span>
+        );
+      })
+      .reduce((acc, curr, index) => {
+        if (index > 0) acc.push(<br key={`br-${index}`} />);
+        acc.push(curr);
+        return acc;
+      }, [] as React.ReactNode[]);
   };
 
   return (
@@ -144,7 +170,7 @@ const ChatBot = () => {
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div>
-                <h3 className="text-white font-light">NileByte AI Assistant</h3>
+                <h3 className="text-white font-light">Nilebot AI Assistant</h3>
                 <p className="text-xs text-gray-400">
                   {isLoading ? 'Typing...' : 'Online now'}
                 </p>
@@ -167,9 +193,9 @@ const ChatBot = () => {
                     ? 'bg-gradient-to-r from-[#0052D4] via-[#4364F7] to-[#6FB1FC] text-white'
                     : 'bg-white/10 text-gray-200'
                 }`}>
-                  <p className="text-sm font-light">
+                  <div className="text-sm font-light">
                     {formatMessage(message.text)}
-                  </p>
+                  </div>
                   <p className="text-xs opacity-70 mt-1">
                     {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -183,7 +209,7 @@ const ChatBot = () => {
                 <div className="bg-white/10 text-gray-200 p-3 rounded-lg">
                   <div className="flex items-center space-x-2">
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    <span className="text-sm font-light">Thinking...</span>
+                    <span className="text-sm font-light">Nilebot is thinking...</span>
                   </div>
                 </div>
               </div>
