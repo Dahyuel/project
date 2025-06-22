@@ -43,8 +43,8 @@ const ChatBot = () => {
   const messageQueue = useRef<string[]>([]);
   const isProcessingQueue = useRef(false);
 
-  // N8N Chat Trigger Webhook URL
-  const WEBHOOK_URL = 'https://dahyy.app.n8n.cloud/webhook/b5c5e803-11e7-4915-929d-5911dc2f08e1/chat';
+  // Updated N8N Webhook URL to match your configuration
+  const WEBHOOK_URL = 'https://dahyy.app.n8n.cloud/webhook/bb30e559-80ea-485b-baa0-3667d177c083';
   const MAX_RETRIES = 3;
   const RETRY_DELAY = 1000;
   const REQUEST_TIMEOUT = 30000;
