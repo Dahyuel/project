@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useChatBot } from '../contexts/ChatBotContext';
 import { Phone } from 'lucide-react';
 import { useScrollAnimation } from '../utils/scrollAnimations';
-import DynamicBlobBackground from './DynamicBlobBackground';
+import Aurora from './Aurora';
+import Ballpit from './BallPit';
 
 const Hero = () => {
   const { openChat } = useChatBot();
@@ -33,9 +34,13 @@ const Hero = () => {
 
   return (
     <section id="home" ref={sectionRef} className="min-h-screen flex items-center justify-center relative pt-20 pb-32 bg-black overflow-hidden">
-      <DynamicBlobBackground />
-      
-      <div className="container mx-auto px-4 sm:px-6 text-center relative z-20">
+      <div className="absolute inset-0 w-full h-full z-0">
+        <div style={{ transform: 'scaleY(-1)', width: '100%', height: '100%' }}>
+          <Aurora colorStops={["#0052D4", "#4364F7", "#6FB1FC"]}  blend={0.9} amplitude={1.0} speed={0.5} />
+        </div>
+        <div className="absolute inset-0 w-full h-full bg-black/30 pointer-events-none" />
+      </div>
+      <div className="container mx-auto px-4 sm:px-6 text-center relative z-10">
         <div>
           {/* Badge */}
           <div ref={badgeRef} className="scroll-animate inline-flex items-center px-4 py-2 mb-16 mt-8 bg-white/5 rounded-full border border-white/10 backdrop-blur-sm hover:scale-105 transition-all duration-300">
@@ -70,6 +75,23 @@ const Hero = () => {
             </button>
           </div>
         </div>
+      </div>
+      <div
+        className="w-full absolute left-0 z-20 pointer-events-none"
+        style={{
+          top: 0,
+          height: '100%',
+          mixBlendMode: 'screen',
+          opacity: 0.8
+        }}
+      >
+        <Ballpit count={30} colors={[
+          parseInt("0052D4", 16),
+          parseInt("4364F7", 16),
+          parseInt("6FB1FC", 16),
+          parseInt("0052D4", 16),
+          parseInt("4364F7", 16)
+        ]} />
       </div>
     </section>
   );
