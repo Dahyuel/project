@@ -3,10 +3,23 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../styles/animations.css';
 
+// Add custom styles for the logo
+const logoStyles = {
+  gradient: {
+    background: 'linear-gradient(45deg, #0052D4, #4364F7, #6FB1FC, #0052D4, #4364F7)',
+    backgroundSize: '300% 300%',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    animation: 'gradient-shift 2.5s ease infinite'
+  }
+};
+
 const Navigation = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [showServicesDropdown, setShowServicesDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const dropdownTimeoutRef = useRef<number>();
@@ -16,6 +29,7 @@ const Navigation = () => {
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
     { id: 'services', label: 'Services' },
+    { id: 'pricing', label: 'Pricing' },
     { id: 'faq', label: 'FAQ' },
     { id: 'contact', label: 'Contact' }
   ];
@@ -35,6 +49,24 @@ const Navigation = () => {
     }
 
     const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToHome = () => {
+    if (window.location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById('home');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return;
+    }
+
+    const element = document.getElementById('home');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
@@ -81,7 +113,7 @@ const Navigation = () => {
   const handleMouseLeave = () => {
     dropdownTimeoutRef.current = window.setTimeout(() => {
       setShowServicesDropdown(false);
-    }, 150); // Small delay before hiding
+    }, 150);
   };
 
   useEffect(() => {
@@ -93,10 +125,31 @@ const Navigation = () => {
   }, []);
 
   return (
-    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/10 backdrop-blur-xl border border-white/5 rounded-full hover-glow">
-      <div className="px-6">
-        <div className="flex items-center justify-center h-16">
-          {/* Desktop Navigation - Centered */}
+    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/30 backdrop-blur-xl border border-white/5 rounded-full hover-glow md:left-4 md:right-4 md:transform-none">
+      <div className="px-6 md:container md:mx-auto">
+        <div className="flex items-center justify-center h-16 md:justify-between">
+          {/* Logo - Only on desktop */}
+          <div className="hidden md:flex flex-shrink-0">
+            <button 
+              onClick={scrollToHome}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              className="text-xl font-semibold tracking-wider"
+            >
+              <span 
+                className={`inline-block transition-[background,color] duration-300 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] ${isHovered ? 'bg-gradient-to-r from-[#0052D4] via-[#4364F7] to-[#6FB1FC] bg-clip-text text-transparent animate-gradient-shift' : 'text-white'}`}
+              >
+                Nile
+              </span>
+              <span 
+                className={`inline-block transition-[background,color] duration-300 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] ${isHovered ? 'text-white' : 'bg-gradient-to-r from-[#0052D4] via-[#4364F7] to-[#6FB1FC] bg-clip-text text-transparent animate-gradient-shift'}`}
+              >
+                Byte
+              </span>
+            </button>
+          </div>
+
+          {/* Desktop Navigation - Right aligned on desktop, centered on mobile */}
           <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => (
               <div key={item.id} className="relative">
@@ -156,6 +209,23 @@ const Navigation = () => {
                   </button>
                 )}
               </div>
+            ))}
+          </div>
+
+          {/* Mobile Navigation Items - Centered */}
+          <div className="flex md:hidden items-center space-x-4">
+            {navItems.slice(0, 4).map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`px-3 py-2 text-xs font-light tracking-wide transition-all duration-300 rounded-lg ${
+                  activeSection === item.id
+                    ? 'text-blue-400 bg-blue-400/10'
+                    : 'text-gray-300 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {item.label}
+              </button>
             ))}
           </div>
 
