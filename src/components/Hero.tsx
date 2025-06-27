@@ -68,7 +68,7 @@ const Hero = () => {
           <div ref={ctaRef} className="scroll-animate flex flex-col items-center justify-center gap-4">
             <button
               onClick={() => openChat('Book A Call')}
-              className="premium-button w-[200px] sm:w-auto px-8 py-4 gradient-cta-btn text-white font-normal flex items-center justify-center gap-2"
+              className="premium-button w-[200px] sm:w-auto px-8 py-4 gradient-cta-btn text-white font-normal flex items-center justify-center gap-2 animate-gradient-shift"
             >
               <Phone className="w-5 h-5 mr-1" />
               Book A Call
@@ -76,8 +76,9 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      {/* Hide Ballpit on mobile */}
       <div
-        className="w-full absolute left-0 z-20 pointer-events-none"
+        className="w-full absolute left-0 z-20 pointer-events-none hidden md:block"
         style={{
           top: 0,
           height: '100%',

@@ -60,9 +60,9 @@ const Footer = () => {
             <ul className="space-y-1.5">
               {['Twitter (X)', 'Instagram', 'LinkedIn'].map((platform) => (
                 <li key={platform}>
-                  <a href="#" className="footer-link text-gray-400 hover:text-blue-400 font-light tracking-wide py-0.5 px-0 rounded hover:bg-white/5 block text-left text-sm">
+                  <button className="footer-link text-gray-400 hover:text-white font-light tracking-wide py-0.5 px-0 rounded transition-colors duration-200 block text-left text-sm">
                     {platform}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -90,12 +90,12 @@ const Footer = () => {
             © 2024 Nilebyte
           </p>
           <div className="flex items-center space-x-4 mt-2 md:mt-0">
-            <a href="#" className="footer-link text-gray-400 hover:text-white font-light tracking-wide text-xs px-2 py-0.5 rounded transition-colors duration-200">
+            <button className="footer-link text-gray-400 hover:text-white font-light tracking-wide text-xs px-2 py-0.5 rounded transition-colors duration-200">
               Terms & Conditions
-            </a>
-            <a href="#" className="footer-link text-gray-400 hover:text-white font-light tracking-wide text-xs px-2 py-0.5 rounded transition-colors duration-200">
+            </button>
+            <button className="footer-link text-gray-400 hover:text-white font-light tracking-wide text-xs px-2 py-0.5 rounded transition-colors duration-200">
               Privacy Policy
-            </a>
+            </button>
           </div>
         </div>
       </div>

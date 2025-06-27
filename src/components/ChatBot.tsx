@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Bot, X, Send } from 'lucide-react';
 import { useChatBot } from '../contexts/ChatBotContext';
 
@@ -38,6 +38,7 @@ const ChatBot = () => {
   const [isRendered, setIsRendered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize session ID on component mount
   useEffect(() => {
@@ -62,6 +63,11 @@ const ChatBot = () => {
       setIsRendered(false);
     }
   }, [isOpen, prefilledMessage]);
+
+  // Auto-scroll to bottom when new messages are added
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const extractResponseMessage = (responseData: N8nResponse | N8nResponse[]): string => {
     const data = Array.isArray(responseData) ? responseData[0] : responseData;
@@ -216,7 +222,7 @@ const ChatBot = () => {
             </button>
           </div>
 
-          <div className="flex-1 p-4 overflow-y-auto space-y-3">
+          <div className="flex-1 p-4 overflow-y-auto space-y-3" style={{ scrollBehavior: 'smooth' }}>
             {messages.map((message, index) => (
               <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[80%] p-3 rounded-lg ${
@@ -245,6 +251,7 @@ const ChatBot = () => {
                 </div>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
 
           <div className="p-4 border-t border-white/10">
@@ -272,7 +279,7 @@ const ChatBot = () => {
 
       <button
         onClick={toggleChat}
-        className="fixed z-50 bottom-6 right-6 md:bottom-8 md:right-8 shadow-xl rounded-full p-4 gradient-cta-btn animate-gradient-shift border border-white/10 backdrop-blur-lg transition-all duration-300 hover:scale-105 focus:outline-none"
+        className="fixed z-50 bottom-6 right-6 md:bottom-8 md:right-8 shadow-xl rounded-full p-4 gradient-cta-btn border border-white/10 backdrop-blur-lg transition-all duration-300 hover:scale-105 focus:outline-none"
         aria-label="Open chatbot"
       >
         <Bot className="w-7 h-7 text-white" />

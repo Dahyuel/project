@@ -124,7 +124,7 @@ const SpecServices = () => {
   return (
     <ChatBotProvider>
       <div className="min-h-screen bg-black relative">
-        <div className="absolute inset-0 w-full h-full z-0">
+        <div className="fixed inset-0 w-full h-full z-0">
           <div style={{ transform: 'scaleY(-1)', width: '100%', height: '100%' }}>
             <Aurora colorStops={["#0052D4", "#4364F7", "#6FB1FC"]} blend={0.9} amplitude={1.0} speed={0.5} />
           </div>
