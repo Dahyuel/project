@@ -25,6 +25,8 @@ const Services = () => {
   return (
     <section id="services" ref={sectionRef} className="py-20 relative bg-black overflow-hidden">
       <DynamicBlobBackground className="blob-bg-services" />
+      <div className="absolute top-0 left-0 w-full h-20 z-10 pointer-events-none bg-gradient-to-b from-black/90 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-20 z-10 pointer-events-none bg-gradient-to-t from-black/90 to-transparent" />
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
           <h2 ref={titleRef} className="scroll-animate text-4xl md:text-5xl font-bold mb-6 text-white tracking-wide">
@@ -57,6 +59,7 @@ const Services = () => {
         <div className="text-center mt-16">
           <Link
             to="/specservices"
+            state={{ scrollTo: 'top' }}
             className="premium-button inline-block px-8 py-4 gradient-cta-btn text-white font-normal"
           >
             Load More

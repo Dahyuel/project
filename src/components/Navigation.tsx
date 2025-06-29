@@ -125,44 +125,96 @@ const Navigation = () => {
   }, []);
 
   return (
-    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/30 backdrop-blur-xl border border-white/5 rounded-full hover-glow md:left-4 md:right-4 md:transform-none">
-      <div className="px-6 md:container md:mx-auto">
-        <div className="flex items-center justify-center h-16 md:justify-between">
-          {/* Logo - Only on desktop */}
-          <div className="hidden md:flex flex-shrink-0">
-            <button 
-              onClick={scrollToHome}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              className="text-xl font-semibold tracking-wider"
-            >
-              <span 
-                className={`inline-block transition-[background,color] duration-300 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] ${isHovered ? 'bg-gradient-to-r from-[#0052D4] via-[#4364F7] to-[#6FB1FC] bg-clip-text text-transparent animate-gradient-shift' : 'text-white'}`}
-              >
-                Nile
-              </span>
-              <span 
-                className={`inline-block transition-[background,color] duration-300 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] ${isHovered ? 'text-white' : 'bg-gradient-to-r from-[#0052D4] via-[#4364F7] to-[#6FB1FC] bg-clip-text text-transparent animate-gradient-shift'}`}
-              >
-                Byte
-              </span>
-            </button>
-          </div>
-
-          {/* Desktop Navigation - Right aligned on desktop, centered on mobile */}
-          <div className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => (
-              <div key={item.id} className="relative">
-                {item.id === 'services' ? (
-                  <div 
-                    ref={dropdownRef}
-                    className="relative"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
+    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/30 backdrop-blur-xl border border-white/5 rounded-full hover-glow w-full max-w-sm md:max-w-fit px-4 md:px-6">
+      <div className="flex items-center justify-between h-16 w-full px-2">
+        {/* Mobile Logo (left) */}
+        <div className="flex md:hidden flex-shrink-0 items-center pl-2">
+          <span className="text-xl font-semibold tracking-wider gradient-cta-btn bg-clip-text text-transparent animate-gradient-cta">NileByte</span>
+        </div>
+        {/* Desktop Nav Items (centered) */}
+        <div className="hidden md:flex items-center space-x-6 mx-auto">
+          {navItems.map((item) => (
+            <div key={item.id} className="relative">
+              {item.id === 'services' ? (
+                <div 
+                  ref={dropdownRef}
+                  className="relative"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <button
+                    onClick={() => scrollToSection(item.id)}
+                    className={`relative px-4 py-2 text-sm font-light tracking-wide transition-all duration-300 rounded-lg flex items-center space-x-1 ${
+                      activeSection === item.id || isServicesPage
+                        ? 'text-blue-400 bg-blue-400/10'
+                        : 'text-gray-300 hover:text-white hover:bg-white/5'
+                    }`}
                   >
+                    {item.label}
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showServicesDropdown ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Services Dropdown */}
+                  {showServicesDropdown && (
+                    <div 
+                      className="absolute right-0 mt-2 w-64 bg-black/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden transform origin-top-right transition-all duration-200"
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <Link
+                        to="/genservices"
+                        className="nav-dropdown-item block px-6 py-3 text-gray-300 hover:text-white transition-all duration-200 border-b border-white/5 hover:bg-white/5"
+                      >
+                        <div className="font-medium">General Services</div>
+                        <div className="text-xs text-gray-500 mt-1">Comprehensive AI solutions</div>
+                      </Link>
+                      <Link
+                        to="/specservices"
+                        className="nav-dropdown-item block px-6 py-3 text-gray-300 hover:text-white transition-all duration-200 hover:bg-white/5"
+                      >
+                        <div className="font-medium">Specific Niche</div>
+                        <div className="text-xs text-gray-500 mt-1">Industry-focused solutions</div>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => scrollToSection(item.id)}
+                  className={`relative px-4 py-2 text-sm font-light tracking-wide transition-all duration-300 rounded-lg ${
+                    activeSection === item.id
+                      ? 'text-blue-400 bg-blue-400/10'
+                      : 'text-gray-300 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+        {/* Mobile Menu Button (right) */}
+        <button
+          onClick={() => setShowMobileMenu(!showMobileMenu)}
+          className="md:hidden p-2 text-gray-300 hover:text-white transition-colors duration-200 ml-auto pr-2"
+        >
+          {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      {/* Mobile Menu - Fixed positioning and better styling */}
+      {showMobileMenu && (
+        <div className="md:hidden absolute top-full left-0 right-0 mt-2 bg-black/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden">
+          <div className="flex flex-col py-2">
+            {navItems.map((item) => (
+              <div key={item.id}>
+                {item.id === 'services' ? (
+                  <div>
                     <button
-                      onClick={() => scrollToSection(item.id)}
-                      className={`relative px-4 py-2 text-sm font-light tracking-wide transition-all duration-300 rounded-lg flex items-center space-x-1 ${
+                      onClick={() => {
+                        setShowServicesDropdown(!showServicesDropdown);
+                      }}
+                      className={`w-full text-left px-6 py-3 text-sm font-light tracking-wide transition-all duration-300 flex items-center justify-between ${
                         activeSection === item.id || isServicesPage
                           ? 'text-blue-400 bg-blue-400/10'
                           : 'text-gray-300 hover:text-white hover:bg-white/5'
@@ -171,35 +223,32 @@ const Navigation = () => {
                       {item.label}
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showServicesDropdown ? 'rotate-180' : ''}`} />
                     </button>
-
-                    {/* Services Dropdown */}
                     {showServicesDropdown && (
-                      <div 
-                        className="absolute right-0 mt-2 w-64 bg-black/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden transform origin-top-right transition-all duration-200"
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                      >
+                      <>
                         <Link
                           to="/genservices"
-                          className="nav-dropdown-item block px-6 py-3 text-gray-300 hover:text-white transition-all duration-200 border-b border-white/5 hover:bg-white/5"
+                          onClick={() => setShowMobileMenu(false)}
+                          className="block px-8 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200"
                         >
-                          <div className="font-medium">General Services</div>
-                          <div className="text-xs text-gray-500 mt-1">Comprehensive AI solutions</div>
+                          General Services
                         </Link>
                         <Link
                           to="/specservices"
-                          className="nav-dropdown-item block px-6 py-3 text-gray-300 hover:text-white transition-all duration-200 hover:bg-white/5"
+                          onClick={() => setShowMobileMenu(false)}
+                          className="block px-8 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200"
                         >
-                          <div className="font-medium">Specific Niche</div>
-                          <div className="text-xs text-gray-500 mt-1">Industry-focused solutions</div>
+                          Specific Niche
                         </Link>
-                      </div>
+                      </>
                     )}
                   </div>
                 ) : (
                   <button
-                    onClick={() => scrollToSection(item.id)}
-                    className={`relative px-4 py-2 text-sm font-light tracking-wide transition-all duration-300 rounded-lg ${
+                    onClick={() => {
+                      scrollToSection(item.id);
+                      setShowMobileMenu(false);
+                    }}
+                    className={`w-full text-left px-6 py-3 text-sm font-light tracking-wide transition-all duration-300 ${
                       activeSection === item.id
                         ? 'text-blue-400 bg-blue-400/10'
                         : 'text-gray-300 hover:text-white hover:bg-white/5'
@@ -211,94 +260,8 @@ const Navigation = () => {
               </div>
             ))}
           </div>
-
-          {/* Mobile Navigation Items - Centered */}
-          <div className="flex md:hidden items-center space-x-4">
-            {navItems.slice(0, 4).map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`px-3 py-2 text-xs font-light tracking-wide transition-all duration-300 rounded-lg ${
-                  activeSection === item.id
-                    ? 'text-blue-400 bg-blue-400/10'
-                    : 'text-gray-300 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="md:hidden p-2 text-gray-300 hover:text-white transition-colors duration-200"
-          >
-            {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
         </div>
-
-        {/* Mobile Menu - Fixed positioning and better styling */}
-        {showMobileMenu && (
-          <div className="md:hidden absolute top-full left-0 right-0 mt-2 bg-black/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden">
-            <div className="flex flex-col py-2">
-              {navItems.map((item) => (
-                <div key={item.id}>
-                  {item.id === 'services' ? (
-                    <div>
-                      <button
-                        onClick={() => {
-                          setShowServicesDropdown(!showServicesDropdown);
-                        }}
-                        className={`w-full text-left px-6 py-3 text-sm font-light tracking-wide transition-all duration-300 flex items-center justify-between ${
-                          activeSection === item.id || isServicesPage
-                            ? 'text-blue-400 bg-blue-400/10'
-                            : 'text-gray-300 hover:text-white hover:bg-white/5'
-                        }`}
-                      >
-                        {item.label}
-                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showServicesDropdown ? 'rotate-180' : ''}`} />
-                      </button>
-                      {showServicesDropdown && (
-                        <div className="bg-black/50 border-t border-white/5">
-                          <Link
-                            to="/genservices"
-                            onClick={() => setShowMobileMenu(false)}
-                            className="block px-8 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200"
-                          >
-                            General Services
-                          </Link>
-                          <Link
-                            to="/specservices"
-                            onClick={() => setShowMobileMenu(false)}
-                            className="block px-8 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200"
-                          >
-                            Specific Niche
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        scrollToSection(item.id);
-                        setShowMobileMenu(false);
-                      }}
-                      className={`w-full text-left px-6 py-3 text-sm font-light tracking-wide transition-all duration-300 ${
-                        activeSection === item.id
-                          ? 'text-blue-400 bg-blue-400/10'
-                          : 'text-gray-300 hover:text-white hover:bg-white/5'
-                      }`}
-                    >
-                      {item.label}
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+      )}
     </nav>
   );
 };

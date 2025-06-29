@@ -19,95 +19,153 @@ const pricingData: NichePricing[] = [
     name: 'Sales',
     plans: [
       {
-        name: 'Basic Bundle',
-        price: '$97-147/month',
-        description: 'Essential sales automation tools',
+        name: 'Basic',
+        price: '$147–197/month',
+        description: 'Starter sales automation',
         features: [
-          'Lead capture forms with basic qualification',
-          '3-sequence email automation (welcome, nurture, follow-up)',
-          'Simple CRM setup and contact tagging',
-          'Basic pipeline tracking',
-          'Monthly performance report'
-        ]
+          'Lead capture to CRM',
+          'Cold email & LinkedIn automation',
+          'Auto-booking calendar sync',
+          'Reminders & no-show follow-ups',
+          'Weekly pipeline summary',
+        ],
       },
       {
-        name: 'Pro Bundle',
-        price: '$247-347/month',
-        description: 'Advanced sales automation suite',
+        name: 'Pro',
+        price: '$297–497/month',
+        description: 'Full-funnel sales automation',
         features: [
-          'Everything in Basic plus:',
-          'Lead scoring system',
-          'Email + SMS automation',
-          'Meeting booking integration',
-          'Simple proposal templates',
-          'Sales performance dashboard',
-          'Priority support'
-        ]
-      }
-    ]
+          'Everything in Basic',
+          'SMS + WhatsApp follow-up',
+          'AI lead scoring',
+          'Custom sales workflows',
+          'Warm-up/reactivation flows',
+          'Bi-weekly conversion reviews',
+        ],
+      },
+    ],
   },
   {
     name: 'Coaching',
     plans: [
       {
-        name: 'Basic Bundle',
-        price: '$77-127/month',
-        description: 'Essential coaching automation',
+        name: 'Basic',
+        price: '$127–177/month',
+        description: 'Coaching ops made simple',
         features: [
-          'Client intake form automation',
-          'Basic scheduling system',
-          'Payment collection setup',
-          'Simple progress check-in emails',
-          'Monthly client report'
-        ]
+          'Intake → calendar automation',
+          'Email/SMS session reminders',
+          'Onboarding email flow',
+          'Feedback request automation',
+          'Prep docs sent before session',
+        ],
       },
       {
-        name: 'Pro Bundle',
-        price: '$197-297/month',
-        description: 'Complete coaching automation',
+        name: 'Pro',
+        price: '$277–447/month',
+        description: 'Scale coaching with smart workflows',
         features: [
-          'Everything in Basic plus:',
-          'Client onboarding sequence',
-          'Resource delivery automation',
-          'Progress tracking workflows',
-          'Retention email campaigns',
-          'Basic client portal',
-          'Weekly optimization calls'
-        ]
-      }
-    ]
+          'Everything in Basic',
+          'Course/membership automation',
+          'Upsell/payment flows',
+          'AI session summaries',
+          'Lead nurture sequences',
+          'Monthly performance report',
+        ],
+      },
+    ],
   },
   {
-    name: 'Real Estate',
+    name: 'Real-Estate',
     plans: [
       {
-        name: 'Basic Bundle',
-        price: '$127-177/month',
-        description: 'Essential real estate automation',
+        name: 'Basic',
+        price: '$127–177/month',
+        description: 'Essential listing automation',
         features: [
-          'Lead capture and basic qualification',
+          'Lead capture & qualification',
           'Buyer/seller email sequences',
           'Showing request automation',
-          'Simple follow-up system',
-          'Monthly lead report'
-        ]
+          'Follow-up system',
+          'Monthly lead report',
+        ],
       },
       {
-        name: 'Pro Bundle',
-        price: '$297-447/month',
-        description: 'Advanced real estate automation',
+        name: 'Pro',
+        price: '$297–447/month',
+        description: 'Advanced real estate workflows',
         features: [
-          'Everything in Basic plus:',
-          'Multi-source lead integration',
-          'Property alert system',
-          'Transaction milestone automation',
-          'Past client nurturing',
-          'Referral request campaigns',
-          'Bi-weekly strategy calls'
-        ]
-      }
-    ]
-  }
+          'Everything in Basic',
+          'Multi-source lead sync',
+          'Property alert emails',
+          'Deal milestone automation',
+          'Referral & nurture flows',
+          'Bi-weekly strategy calls',
+        ],
+      },
+    ],
+  },
+  {
+    name: 'E-Commerce',
+    plans: [
+      {
+        name: 'Basic',
+        price: '$147–197/month',
+        description: 'Boost sales, save time',
+        features: [
+          'Abandoned cart flows',
+          'Order tracking notifications',
+          'Review request automation',
+          'Inventory automation',
+          'AI chatbot for IG/FB DMs',
+          'Winback email flows',
+        ],
+      },
+      {
+        name: 'Pro',
+        price: '$347–547/month',
+        description: 'Full-stack ecom automation',
+        features: [
+          'Everything in Basic',
+          'Upsell/cross-sell flows',
+          'AI product recommendations',
+          'Loyalty/rewards workflows',
+          'Growth dashboard',
+          'Bi-weekly strategy sessions',
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Marketing',
+    plans: [
+      {
+        name: 'Basic',
+        price: '$177–247/month',
+        description: 'Automate your ops',
+        features: [
+          'CRM lead capture',
+          'Proposal → invoice automation',
+          'Client onboarding flows',
+          'Weekly task digests',
+          'Launch checklist workflows',
+        ],
+      },
+      {
+        name: 'Pro',
+        price: '$397–647/month',
+        description: 'Systemize for scale',
+        features: [
+          'Everything in Basic',
+          'Churn prevention automations',
+          'White-labeled dashboards',
+          'AI content feedback loops',
+          'Client health summaries',
+          'Calendar + approvals integration',
+        ],
+      },
+    ],
+  },
 ];
 
 const Pricing = () => {
@@ -197,7 +255,7 @@ const Pricing = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
           <h2 ref={titleRef} className="scroll-animate text-4xl md:text-5xl font-bold mb-6 text-white tracking-wide">
-            Transparent <span className="dynamic-gradient-text">Pricing</span>
+            <span className="dynamic-gradient-text">Pricing</span>
           </h2>
           <p ref={textRef} className="scroll-animate text-base font-light text-gray-400 max-w-3xl mx-auto leading-relaxed tracking-wide">
             Choose the perfect automation package for your business needs. All plans include setup, training, and ongoing support.
@@ -291,44 +349,57 @@ const Pricing = () => {
         </div>
 
         {/* Pricing Cards */}
-        <div ref={cardsRef} className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto stagger-children scroll-animate">
-          {currentNiche.plans.map((plan, index) => (
-            <div
-              key={index}
-              className={`unified-card p-8 bg-white/5 border border-white/10 rounded-2xl group relative ${
-                index === 1 ? 'md:transform md:scale-105' : ''
-              }`}
-            >
-              {index === 1 && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-[#0052D4] via-[#4364F7] to-[#6FB1FC] text-white px-4 py-1 rounded-full text-sm font-bold">
-                    Most Popular
+        <div ref={cardsRef} className="flex flex-col md:flex-row gap-8 max-w-4xl mx-auto stagger-children scroll-animate h-full">
+          {/* Basic Card */}
+          <div className="unified-card p-8 bg-white/5 border border-white/10 rounded-2xl group relative flex flex-col h-full min-h-[540px] flex-1">
+            <div className="text-left mb-8 flex-shrink-0">
+              <h3 className="text-4xl font-extrabold dynamic-gradient-text mb-2 tracking-wide">{currentNiche.plans[0].name.replace(' Bundle', '')}</h3>
+              <div className="text-xl font-bold text-white mb-2">{currentNiche.plans[0].price}</div>
+              <p className="text-gray-400 font-light">{currentNiche.plans[0].description}</p>
+            </div>
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 h-px bg-gray-700" />
+              <span className="uppercase text-xs tracking-widest text-gray-500 font-semibold px-4">Features</span>
+              <div className="flex-1 h-px bg-gray-700" />
+            </div>
+            <div className="space-y-6 flex flex-col">
+              {currentNiche.plans[0].features.map((feature, featureIndex) => (
+                <div key={featureIndex} className="flex items-center">
+                  <div className="w-3 h-3 bg-white/10 rounded-full mr-2 flex-shrink-0 transition-all duration-300 group-hover:bg-white" />
+                  <span className="text-gray-300 font-light leading-none flex items-center">
+                    {feature.startsWith('Everything in Basic')
+                      ? 'Everything in Basic plan'
+                      : feature}
                   </span>
                 </div>
-              )}
-              
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-2 tracking-wide">{plan.name}</h3>
-                <div className="text-3xl font-bold dynamic-gradient-text mb-2">{plan.price}</div>
-                <p className="text-gray-400 font-light">{plan.description}</p>
-              </div>
-
-              <div className="space-y-4">
-                {plan.features.map((feature, featureIndex) => (
-                  <div key={featureIndex} className="flex items-start">
-                    <div className="w-5 h-5 dynamic-gradient-icon rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                      <Check className="w-3 h-3 text-white" />
-                    </div>
-                    <span className={`text-gray-300 font-light leading-relaxed ${
-                      feature.startsWith('Everything in Basic') ? 'font-semibold text-white' : ''
-                    }`}>
-                      {feature}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
+          {/* Pro Card (duplicate structure, different content) */}
+          <div className="unified-card p-8 bg-white/5 border border-white/10 rounded-2xl group relative flex flex-col h-full min-h-[540px] flex-1">
+            <div className="text-left mb-8 flex-shrink-0">
+              <h3 className="text-4xl font-extrabold dynamic-gradient-text mb-2 tracking-wide">{currentNiche.plans[1].name.replace(' Bundle', '')}</h3>
+              <div className="text-xl font-bold text-white mb-2">{currentNiche.plans[1].price}</div>
+              <p className="text-gray-400 font-light">{currentNiche.plans[1].description}</p>
+            </div>
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 h-px bg-gray-700" />
+              <span className="uppercase text-xs tracking-widest text-gray-500 font-semibold px-4">Features</span>
+              <div className="flex-1 h-px bg-gray-700" />
+            </div>
+            <div className="space-y-6 flex flex-col">
+              {currentNiche.plans[1].features.map((feature, featureIndex) => (
+                <div key={featureIndex} className="flex items-center">
+                  <div className="w-3 h-3 bg-white/10 rounded-full mr-2 flex-shrink-0 transition-all duration-300 group-hover:bg-white" />
+                  <span className="text-gray-300 font-light leading-none flex items-center">
+                    {feature.startsWith('Everything in Basic')
+                      ? 'Everything in Basic plan'
+                      : feature}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

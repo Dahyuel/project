@@ -30,9 +30,18 @@ interface N8nResponse {
 
 const ChatBot = () => {
   const { isOpen, closeChat, toggleChat, prefilledMessage } = useChatBot();
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { type: 'bot', text: 'Hello! I\'m Nilebyte AI assistant. How can I help with AI automation today?' }
-  ]);
+  const defaultWelcome = { type: 'bot', text: "Hello! I'm Nilebyte AI assistant. How can I help with AI automation today?" };
+  const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    const saved = localStorage.getItem('chatbot-messages');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return [defaultWelcome];
+      }
+    }
+    return [defaultWelcome];
+  });
   const [inputValue, setInputValue] = useState('');
   const [isClosing, setIsClosing] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
@@ -68,6 +77,20 @@ const ChatBot = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    localStorage.setItem('chatbot-messages', JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
+    const clearChatHistory = () => {
+      localStorage.removeItem('chatbot-messages');
+    };
+    window.addEventListener('beforeunload', clearChatHistory);
+    return () => {
+      window.removeEventListener('beforeunload', clearChatHistory);
+    };
+  }, []);
 
   const extractResponseMessage = (responseData: N8nResponse | N8nResponse[]): string => {
     const data = Array.isArray(responseData) ? responseData[0] : responseData;
@@ -206,7 +229,19 @@ const ChatBot = () => {
   return (
     <>
       {isOpen && (
-        <div className={`chatbot-container fixed bottom-24 right-6 w-80 h-96 bg-black/80 border border-white/20 rounded-xl backdrop-blur-md z-50 flex flex-col ${(isRendered && !isClosing) ? 'open' : ''}`}>
+        <div
+          className={`chatbot-container fixed bottom-24 right-6 w-80 h-96 bg-black/80 border border-white/20 rounded-xl backdrop-blur-md z-50 flex flex-col ${(isRendered && !isClosing) ? 'open' : ''}`}
+          tabIndex={0}
+          onWheelCapture={e => {
+            if (document.activeElement === e.currentTarget) {
+              e.preventDefault();
+              const messagesDiv = e.currentTarget.querySelector('.chatbot-messages') as HTMLDivElement;
+              if (messagesDiv) {
+                messagesDiv.scrollTop += e.deltaY;
+              }
+            }
+          }}
+        >
           <div className="flex items-center justify-between p-4 border-b border-white/10">
             <div className="flex items-center">
               <div className="w-8 h-8 dynamic-gradient-icon rounded-full flex items-center justify-center mr-3">
@@ -222,7 +257,23 @@ const ChatBot = () => {
             </button>
           </div>
 
-          <div className="flex-1 p-4 overflow-y-auto space-y-3" style={{ scrollBehavior: 'smooth' }}>
+          <div
+            className="chatbot-messages flex-1 p-4 overflow-y-auto space-y-3"
+            style={{ scrollBehavior: 'smooth' }}
+            onWheelCapture={e => {
+              const el = e.currentTarget;
+              const { scrollTop, scrollHeight, clientHeight } = el;
+              const atTop = scrollTop === 0;
+              const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+              if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+                // Let page scroll
+                return;
+              }
+              // Prevent page scroll if can scroll inside chatbot
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          >
             {messages.map((message, index) => (
               <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[80%] p-3 rounded-lg ${

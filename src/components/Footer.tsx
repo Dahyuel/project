@@ -1,20 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
   const navigate = useNavigate();
 
+  const [subName, setSubName] = useState('');
+  const [subEmail, setSubEmail] = useState('');
+  const [subStatus, setSubStatus] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubStatus('');
+    if (!subName.trim() || !subEmail.trim()) {
+      setSubStatus('Please enter your name and email.');
+      return;
+    }
+    try {
+      const res = await fetch('https://hook.eu2.make.com/2wrxs3a6ls4yyg6139mryinuusxvbknp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: subName, email: subEmail })
+      });
+      if (res.ok) {
+        setSubStatus('Thank you for subscribing!');
+        setSubName('');
+        setSubEmail('');
+      } else {
+        setSubStatus('Subscription failed. Please try again.');
+      }
+    } catch {
+      setSubStatus('Subscription failed. Please try again.');
+    }
+  };
+
   const scrollToSection = (sectionId: string) => {
-    // If we're not on the homepage, navigate there first
+    // If we're not on the homepage, navigate there with state for the section
     if (window.location.pathname !== '/') {
-      navigate('/');
-      // Use a short timeout to allow the page to change before scrolling
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
+      navigate('/', { state: { scrollTo: sectionId } });
       return;
     }
 
@@ -71,16 +93,26 @@ const Footer = () => {
           {/* Subscribe Form */}
           <div>
             <h3 className="text-white font-semibold mb-3 tracking-wide text-sm">Subscribe Form</h3>
-            <div className="flex flex-col space-y-4">
+            <form className="flex flex-col space-y-4" onSubmit={handleSubscribe}>
+              <input
+                type="text"
+                placeholder="Enter Your Name..."
+                value={subName}
+                onChange={e => setSubName(e.target.value)}
+                className="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-all duration-300 font-light text-sm"
+              />
               <input
                 type="email"
                 placeholder="Enter Your Email..."
+                value={subEmail}
+                onChange={e => setSubEmail(e.target.value)}
                 className="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-all duration-300 font-light text-sm"
               />
-              <button className="premium-button px-6 py-2 gradient-cta-btn text-white font-normal text-sm">
+              <button type="submit" className="premium-button px-6 py-2 gradient-cta-btn text-white font-normal text-sm">
                 Subscribe
               </button>
-            </div>
+              {subStatus && <div className="text-xs text-center text-gray-300 mt-1">{subStatus}</div>}
+            </form>
           </div>
         </div>
 

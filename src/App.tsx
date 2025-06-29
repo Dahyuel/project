@@ -7,6 +7,7 @@ import { initSmoothScroll } from './utils/smoothScroll';
 import './animations.css';
 import './styles/buttons.css';
 import './styles/faq.css';
+import { ChatBotProvider } from './contexts/ChatBotContext';
 
 function App() {
   useEffect(() => {
@@ -16,13 +17,13 @@ function App() {
   }, []);
 
   return (
-    <>
+    <ChatBotProvider>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/specservices" element={<SpecServices />} />
         <Route path="/genservices" element={<GenServices />} />
       </Routes>
-    </>
+    </ChatBotProvider>
   );
 }
 

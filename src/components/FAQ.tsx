@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { useScrollAnimation } from '../utils/scrollAnimations';
+import DynamicBlobBackground from '../components/DynamicBlobBackground';
 
 const faqs = [
   {
@@ -54,9 +55,11 @@ const FAQ: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-20 px-4 md:px-8 max-w-7xl mx-auto"
+      className="py-20 px-6 md:px-16 relative bg-transparent overflow-hidden"
       id="faq"
     >
+      <DynamicBlobBackground className="blob-bg-services" />
+      <div className="absolute top-0 left-0 w-full h-20 z-10 pointer-events-none bg-gradient-to-b from-black/90 to-transparent" />
       <div className="text-center mb-12">
         <h2 ref={titleRef} className="scroll-animate text-4xl md:text-5xl font-bold mb-4">
           Frequently Asked <span className="dynamic-gradient-text">Questions</span>
@@ -105,6 +108,7 @@ const FAQ: React.FC = () => {
           </div>
         ))}
       </div>
+      <div className="absolute bottom-0 left-0 w-full h-20 z-10 pointer-events-none bg-gradient-to-t from-black/90 to-transparent" />
     </section>
   );
 };

@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import ChatBot from '../components/ChatBot';
-import { ChatBotProvider } from '../contexts/ChatBotContext';
 import '../styles/animations.css';
 import Aurora from '../components/Aurora';
 import { useScrollAnimation } from '../utils/scrollAnimations';
@@ -36,56 +35,54 @@ const GenServices = () => {
   }, [observeElements]);
 
   return (
-    <ChatBotProvider>
-      <div className="min-h-screen bg-black text-white overflow-x-hidden relative overflow-hidden">
-        <div className="absolute inset-0 w-full h-full z-0">
-          <div style={{ transform: 'scaleY(-1)', width: '100%', height: '100%' }}>
-            <Aurora colorStops={["#0052D4", "#4364F7", "#6FB1FC"]} blend={0.9} amplitude={1.0} speed={0.5} />
-          </div>
-          <div className="absolute inset-0 w-full h-full bg-black/30 pointer-events-none" />
+    <div className="min-h-screen bg-black text-white overflow-x-hidden relative overflow-hidden">
+      <div className="absolute inset-0 w-full h-full z-0">
+        <div style={{ transform: 'scaleY(-1)', width: '100%', height: '100%' }}>
+          <Aurora colorStops={["#0052D4", "#4364F7", "#6FB1FC"]} blend={0.7} amplitude={2.0} speed={0.7} />
         </div>
-        <div className="relative z-20">
-          <Navigation />
-          <main>
-            {/* Hero Section */}
-            <section className="pt-32 pb-8 relative">
-              <div className="container mx-auto px-6 text-center relative z-10">
-                <div ref={heroRef} className="scroll-animate slow-fade-blur">
-                  <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight tracking-tight">
-                    <span className="dynamic-gradient-text">General Services</span>
-                  </h1>
-                  <p className="text-lg font-light text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed tracking-wide">
-                    Comprehensive AI solutions designed to transform your business operations and drive innovation across all sectors.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* Services Grid Section */}
-            <section className="pb-16 relative">
-              <div className="container mx-auto px-6 relative z-10">
-                <div ref={topGridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children scroll-animate">
-                  {servicesData.map((service, index) => (
-                    <div
-                      key={index}
-                      className="unified-card p-8 bg-white/5 border border-white/10 rounded-2xl group"
-                    >
-                      <div className="w-16 h-16 dynamic-gradient-icon rounded-lg flex items-center justify-center mb-6 card-icon">
-                        <service.icon className="w-8 h-8 text-white" />
-                      </div>
-                      <h3 className="text-xl font-semibold mb-4 text-white tracking-wide">{service.title}</h3>
-                      <p className="text-gray-400 font-light leading-relaxed tracking-wide">{service.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-          </main>
-          <Footer />
-          <ChatBot />
-        </div>
+        <div className="absolute inset-0 w-full h-full bg-black/30 pointer-events-none" />
       </div>
-    </ChatBotProvider>
+      <div className="relative z-20">
+        <Navigation />
+        <main>
+          {/* Hero Section */}
+          <section className="pt-32 pb-8 relative">
+            <div className="container mx-auto px-6 text-center relative z-10">
+              <div ref={heroRef} className="scroll-animate slow-fade-blur">
+                <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight tracking-tight">
+                  <span className="dynamic-gradient-text">General Services</span>
+                </h1>
+                <p className="text-lg font-light text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed tracking-wide">
+                  Comprehensive AI solutions designed to transform your business operations and drive innovation across all sectors.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Services Grid Section */}
+          <section className="pb-16 relative">
+            <div className="container mx-auto px-6 relative z-10">
+              <div ref={topGridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children scroll-animate">
+                {servicesData.map((service, index) => (
+                  <div
+                    key={index}
+                    className="unified-card p-8 bg-white/5 border border-white/10 rounded-2xl group"
+                  >
+                    <div className="w-16 h-16 dynamic-gradient-icon rounded-lg flex items-center justify-center mb-6 card-icon">
+                      <service.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-4 text-white tracking-wide">{service.title}</h3>
+                    <p className="text-gray-400 font-light leading-relaxed tracking-wide">{service.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
+        <Footer />
+        <ChatBot />
+      </div>
+    </div>
   );
 };
 

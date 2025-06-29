@@ -24,7 +24,6 @@ const ReadyToTransform = () => {
 
   return (
     <section id="readytotransform" ref={sectionRef} className="py-32 relative bg-black overflow-hidden">
-      <DynamicBlobBackground className="blob-bg-services" />
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center">
           <h2 ref={titleRef} className="scroll-animate text-4xl md:text-5xl font-bold mb-6 text-white tracking-wide">
@@ -38,17 +37,17 @@ const ReadyToTransform = () => {
             Let's discuss how AI can revolutionize your operations and drive unprecedented growth for your company.
           </p>
 
-          <div ref={buttonsRef} className="scroll-animate flex flex-row gap-4 justify-center items-center stagger-children">
+          <div ref={buttonsRef} className="scroll-animate flex flex-col sm:flex-row gap-4 justify-center items-center stagger-children">
             <button
               onClick={() => openChat('Book A Call')}
-              className="premium-button px-6 py-4 gradient-cta-btn text-white font-normal flex items-center justify-center gap-2 text-sm sm:text-base"
+              className="premium-button w-full sm:w-auto px-6 py-4 gradient-cta-btn text-white font-normal flex items-center justify-center gap-2 text-sm sm:text-base"
             >
               <Phone className="w-5 h-5 mr-1" />
               Book A Call
             </button>
             <button
               onClick={() => openChat()}
-              className="premium-button px-6 py-4 white-cta-btn font-normal flex items-center justify-center gap-2 text-sm sm:text-base"
+              className="premium-button w-full sm:w-auto px-6 py-4 white-cta-btn text-white font-normal flex items-center justify-center gap-2 text-sm sm:text-base chat-bot-hover"
             >
               <MessageCircle className="w-5 h-5 mr-1" />
               Chat With Our Bot

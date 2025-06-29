@@ -3,7 +3,6 @@ import { useChatBot } from '../contexts/ChatBotContext';
 import { Phone } from 'lucide-react';
 import { useScrollAnimation } from '../utils/scrollAnimations';
 import Aurora from './Aurora';
-import Ballpit from './BallPit';
 
 const Hero = () => {
   const { openChat } = useChatBot();
@@ -35,8 +34,8 @@ const Hero = () => {
   return (
     <section id="home" ref={sectionRef} className="min-h-screen flex items-center justify-center relative pt-20 pb-32 bg-black overflow-hidden">
       <div className="absolute inset-0 w-full h-full z-0">
-        <div style={{ transform: 'scaleY(-1)', width: '100%', height: '100%' }}>
-          <Aurora colorStops={["#0052D4", "#4364F7", "#6FB1FC"]}  blend={0.9} amplitude={1.0} speed={0.5} />
+        <div style={{ transform: 'scaleY(1)', width: '100%', height: '100%' }}>
+          <Aurora colorStops={["#0052D4", "#4364F7", "#6FB1FC"]}  blend={0.5} amplitude={1.0} speed={0.5} />
         </div>
         <div className="absolute inset-0 w-full h-full bg-black/30 pointer-events-none" />
       </div>
@@ -50,15 +49,15 @@ const Hero = () => {
           </div>
 
           {/* Main Headline */}
-          <h1 ref={headlineRef} className="scroll-animate text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight">
+          <h1 ref={headlineRef} className="scroll-animate text-4xl sm:text-5xl md:text-7xl font-bold mb-2 leading-[1.15] tracking-tight">
             <span className="block text-white">AI-Driven Success</span>
-            <span className="block dynamic-gradient-text">
+            <span className="block dynamic-gradient-text pb-4">
               Redefining the Future.
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p ref={subtitleRef} className="scroll-animate text-sm sm:text-base md:text-lg font-light text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed tracking-wide">
+          <p ref={subtitleRef} className="scroll-animate text-sm sm:text-base md:text-lg font-light text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed tracking-wide">
             Creating latest solutions that redefine innovation.
             <br className="hidden sm:block" />
             Stay ahead with AI-powered technology for the future.
@@ -75,24 +74,6 @@ const Hero = () => {
             </button>
           </div>
         </div>
-      </div>
-      {/* Hide Ballpit on mobile */}
-      <div
-        className="w-full absolute left-0 z-20 pointer-events-none hidden md:block"
-        style={{
-          top: 0,
-          height: '100%',
-          mixBlendMode: 'screen',
-          opacity: 0.8
-        }}
-      >
-        <Ballpit count={30} colors={[
-          parseInt("0052D4", 16),
-          parseInt("4364F7", 16),
-          parseInt("6FB1FC", 16),
-          parseInt("0052D4", 16),
-          parseInt("4364F7", 16)
-        ]} />
       </div>
     </section>
   );
