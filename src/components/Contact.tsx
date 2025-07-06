@@ -35,8 +35,8 @@ const Contact = () => {
             </p>
           </div>
 
-          <div ref={gridRef} className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto stagger-children scroll-animate">
-            <div className="unified-card flex-1 min-w-0 flex items-center bg-white/5 border border-white/10 rounded-2xl p-6 group">
+          <div ref={gridRef} className="flex flex-col md:flex-row justify-center gap-8 max-w-4xl mx-auto stagger-children scroll-animate">
+            <div className="unified-card flex items-center bg-white/5 border border-white/10 rounded-2xl p-6 group">
               <div className="w-12 h-12 dynamic-gradient-icon rounded-lg flex items-center justify-center mr-4 card-icon">
                 <Phone className="w-6 h-6 text-white" />
               </div>
@@ -46,7 +46,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="unified-card flex-1 min-w-0 flex items-center bg-white/5 border border-white/10 rounded-2xl p-6 group">
+            <div className="unified-card flex items-center bg-white/5 border border-white/10 rounded-2xl p-6 group">
               <div className="w-12 h-12 dynamic-gradient-icon rounded-lg flex items-center justify-center mr-4 card-icon">
                 <Mail className="w-6 h-6 text-white" />
               </div>
@@ -56,7 +56,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="unified-card flex-1 min-w-0 flex items-center bg-white/5 border border-white/10 rounded-2xl p-6 group">
+            <div className="unified-card flex items-center bg-white/5 border border-white/10 rounded-2xl p-6 group">
               <div className="w-12 h-12 dynamic-gradient-icon rounded-lg flex items-center justify-center mr-4 card-icon">
                 <MapPin className="w-6 h-6 text-white" />
               </div>
